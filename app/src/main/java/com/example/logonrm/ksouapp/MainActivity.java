@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     String METHOD_NAME = "Soma";
     String SOAP_ACTION = "";
-    String NAMESPACE= "http://henrique.com.br/";
+    String NAMESPACE = "http://henrique.com.br/";
     String SOAP_URL = "http://10.3.1.37:8080/Calculadora/Calculadora";
     EditText etNumero1, etNumero2;
     Button btSomar;
@@ -43,12 +43,13 @@ public class MainActivity extends AppCompatActivity {
         numero1 = Integer.parseInt(etNumero1.getText().toString());
         numero2 = Integer.parseInt(etNumero2.getText().toString());
         CalculadoraAsync calculadoraAsync = new CalculadoraAsync();
-        calculadoraAsync.execute(numero1,numero2);
+        calculadoraAsync.execute(numero1, numero2);
     }
-    public class CalculadoraAsync extends AsyncTask<Integer,Void,Void>{
+
+    public class CalculadoraAsync extends AsyncTask<Integer, Void, String> {
 
         @Override
-        protected Void doInBackground(Integer... params) {
+        protected String doInBackground(Integer... params) {
             request = new SoapObject(NAMESPACE, METHOD_NAME);
             request.addProperty("numero1", params[0]);
             request.addProperty("numero2", params[1]);
@@ -63,12 +64,12 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.getMessage();
             }
-            return null;
+            return calcular.toString();
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(String calcular) {
+            super.onPostExecute(calcular);
             tvResultado.setText(calcular.toString());
             Toast.makeText(getApplicationContext(), "Resultado: " + calcular.toString(), Toast.LENGTH_SHORT).show();
         }
